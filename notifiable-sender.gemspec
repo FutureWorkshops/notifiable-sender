@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["matt@futureworkshops.com"]
 
   spec.summary       = %q{Connect to Notifiable's notifications API.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/FutureWorkshops/notifiable-sender"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
