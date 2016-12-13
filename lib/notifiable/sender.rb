@@ -15,11 +15,11 @@ module Notifiable
         send_notification(message: message, filters: "{\"user_alias_eq\": \"#{user_alias}\"}")
       end
       
-      def send_notification(message: nil, filters: nil)
+      def send_notification(message: nil, filters: nil, content_avaliable: nil)
         query = {}
         query[:message] = message if message
         query[:filters] = filters if filters
-        
+        query[:content_avaliable] = content_avaliable if content_avaliable
         self.class.post("#{@base_uri}/api/v1/notifications", 
           query: { notification: query },
           headers: {"Authorization" => @access_id}

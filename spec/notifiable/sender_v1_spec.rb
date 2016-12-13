@@ -27,6 +27,10 @@ describe Notifiable::Sender::V1 do
       it { expect(@response.code).to eq 200 }      
     end
     
+    context "with content_avaliable" do
+      let(:query) { {content_avaliable: true} }      
+      it { expect(@response.code).to eq 200 }      
+    end
   end
   
   describe "#send_notification_to_user" do
