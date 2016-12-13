@@ -23,7 +23,7 @@ describe Notifiable::Sender::V1 do
     end
     
     context "with filters" do
-      let(:query) { {filters: "{\"property\": \"lat\", \"predicate\": \"lt\", \"value\": 40.3}"} }      
+      let(:query) { {filters: "[{\"property\": \"lat\", \"predicate\": \"lt\", \"value\": 40.3}]"} }      
       it { expect(@response.code).to eq 200 }      
     end
     
@@ -36,7 +36,7 @@ describe Notifiable::Sender::V1 do
   describe "#send_notification_to_user" do
     let(:user_alias) { "matt@futureworkshops.com" }
     let(:additional_query) { {} }
-    let(:query) { additional_query.merge({filters: "{\"property\": \"user_alias\", \"predicate\": \"eq\", \"value\": \"#{user_alias}\"}"}) }
+    let(:query) { additional_query.merge({filters: "[{\"property\": \"user_alias\", \"predicate\": \"eq\", \"value\": \"#{user_alias}\"}]"}) }
     
     before(:each) do
       stub_request(:post, "http://notifiable.com/api/v1/notifications").
