@@ -22,6 +22,11 @@ describe Notifiable::Sender::V1 do
       it { expect(@response.code).to eq 200 }      
     end
     
+    context "with parameters" do
+      let(:query) { {parameters: "{flow_id: 5}"} }
+      it { expect(@response.code).to eq 200 }      
+    end
+    
     context "with filters" do
       let(:query) { {filters: "[{\"property\": \"lat\", \"predicate\": \"lt\", \"value\": 40.3}]"} }      
       it { expect(@response.code).to eq 200 }      
@@ -49,6 +54,11 @@ describe Notifiable::Sender::V1 do
     
     context "with message" do
       let(:additional_query) { {message: "New Offers"} }
+      it { expect(@response.code).to eq 200 }      
+    end
+    
+    context "with parameters" do
+      let(:additional_query) { {parameters: "{flow_id: 1}"} }
       it { expect(@response.code).to eq 200 }      
     end
   end
