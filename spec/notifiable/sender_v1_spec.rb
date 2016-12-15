@@ -45,7 +45,7 @@ describe Notifiable::Sender::V1 do
     let(:user_alias) { "matt@futureworkshops.com" }
     let(:args) { {} }
     let(:notification_query_params) { additional_notification_query_params.merge({filters: "[{\"property\":\"user_alias\",\"predicate\":\"eq\",\"value\":\"#{user_alias}\"}]"}) }
-    let(:additional_notification_query_params) { {} }
+    let(:additional_notification_query_params) { args }
     
     let(:query) { {} }
     
@@ -59,12 +59,18 @@ describe Notifiable::Sender::V1 do
     end 
     
     context "with message" do
-      let(:additional_query) { {message: "New Offers"} }
+      let(:args) { {message: "New Offers"} }
       it { expect(@response.code).to eq 200 }      
     end
     
     context "with parameters" do
-      let(:additional_query) { {parameters: "{flow_id: 1}"} }
+      let(:args) { {parameters: {flow_id: 5}} }
+      let(:additional_notification_query_params) { {parameters: "{\"flow_id\":5}"} }
+      it { expect(@response.code).to eq 200 }      
+    end
+    
+    context "with content avaliable" do
+      let(:args) { {content_avaliable: true} }
       it { expect(@response.code).to eq 200 }      
     end
   end

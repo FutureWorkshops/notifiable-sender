@@ -11,8 +11,9 @@ module Notifiable
         @base_uri, @access_id = base_uri, access_id
       end
       
-      def send_notification_to_user(user_alias, message: nil, parameters: nil)
-        send_notification(message: message, parameters: parameters, filters: [{property: "user_alias", predicate: "eq", value: user_alias}])
+      def send_notification_to_user(user_alias, message: nil, parameters: nil, content_avaliable: nil)
+        filters = [{property: "user_alias", predicate: "eq", value: user_alias}]
+        send_notification(message: message, parameters: parameters, content_avaliable: content_avaliable, filters: filters)
       end
       
       def send_notification(message: nil, parameters: nil, filters: nil, content_avaliable: nil)
