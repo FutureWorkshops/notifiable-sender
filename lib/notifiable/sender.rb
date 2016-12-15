@@ -17,13 +17,13 @@ module Notifiable
       end
       
       def send_notification(message: nil, parameters: nil, filters: nil, content_avaliable: nil)
-        query = {}
-        query[:message] = message unless message.nil?
-        query[:parameters] = parameters.to_json unless parameters.nil?
-        query[:filters] = filters.to_json unless filters.nil?
-        query[:content_avaliable] = content_avaliable unless content_avaliable.nil?
+        body = {}
+        body[:message] = message unless message.nil?
+        body[:parameters] = parameters.to_json unless parameters.nil?
+        body[:filters] = filters.to_json unless filters.nil?
+        body[:content_avaliable] = content_avaliable unless content_avaliable.nil?
         self.class.post("#{@base_uri}/api/v1/notifications", 
-          query: { notification: query },
+          body: { notification: body },
           headers: {"Authorization" => @access_id}
         )
       end

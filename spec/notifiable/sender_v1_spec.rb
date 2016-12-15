@@ -11,7 +11,7 @@ describe Notifiable::Sender::V1 do
   describe "#send_notification" do
     before(:each) do
       stub_request(:post, "http://notifiable.com/api/v1/notifications").
-               with(query: {notification: notification_query_params}).
+               with(body: {notification: notification_query_params}).
                with(:headers => {'Authorization'=>'abc123'}).
                to_return(status: 200)
     
@@ -36,7 +36,8 @@ describe Notifiable::Sender::V1 do
     end
     
     context "with content_avaliable" do
-      let(:args) { {content_avaliable: true} }      
+      let(:args) { {content_avaliable: true} } 
+      let(:notification_query_params) { {content_avaliable: "true"} }     
       it { expect(@response.code).to eq 200 }      
     end
   end
@@ -47,11 +48,9 @@ describe Notifiable::Sender::V1 do
     let(:notification_query_params) { additional_notification_query_params.merge({filters: "[{\"property\":\"user_alias\",\"predicate\":\"eq\",\"value\":\"#{user_alias}\"}]"}) }
     let(:additional_notification_query_params) { args }
     
-    let(:query) { {} }
-    
     before(:each) do
       stub_request(:post, "http://notifiable.com/api/v1/notifications").
-               with(query: {notification: notification_query_params}).
+               with(body: {notification: notification_query_params}).
                with(:headers => {'Authorization'=>'abc123'}).
                to_return(status: 200)
     
@@ -71,6 +70,7 @@ describe Notifiable::Sender::V1 do
     
     context "with content avaliable" do
       let(:args) { {content_avaliable: true} }
+      let(:additional_notification_query_params) { {content_avaliable: "true"} }   
       it { expect(@response.code).to eq 200 }      
     end
   end
