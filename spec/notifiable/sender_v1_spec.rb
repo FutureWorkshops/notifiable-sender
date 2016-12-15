@@ -35,9 +35,9 @@ describe Notifiable::Sender::V1 do
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with content_avaliable" do
-      let(:args) { {content_avaliable: true} } 
-      let(:notification_query_params) { {content_avaliable: "true"} }     
+    context "with content_available" do
+      let(:args) { {content_available: true} } 
+      let(:notification_query_params) { {content_available: "true"} }     
       it { expect(@response.code).to eq 200 }      
     end
   end
@@ -68,9 +68,9 @@ describe Notifiable::Sender::V1 do
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with content avaliable" do
-      let(:args) { {content_avaliable: true} }
-      let(:additional_notification_query_params) { {content_avaliable: "true"} }   
+    context "with content available" do
+      let(:args) { {content_available: true} }
+      let(:additional_notification_query_params) { {content_available: "true"} }   
       it { expect(@response.code).to eq 200 }      
     end
   end
