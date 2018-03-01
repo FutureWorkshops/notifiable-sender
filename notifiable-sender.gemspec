@@ -5,7 +5,7 @@ require 'notifiable/sender/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "notifiable-sender"
-  spec.version       = Notifiable::Sender::VERSION
+  spec.version       = Notifiable::VERSION
   spec.authors       = ["Matt Brooke-Smith"]
   spec.email         = ["matt@futureworkshops.com"]
 

@@ -1,5 +1,3 @@
 module Notifiable
-  module Sender
-    VERSION = "0.2.0"
-  end
+  VERSION = "0.2.1"
 end

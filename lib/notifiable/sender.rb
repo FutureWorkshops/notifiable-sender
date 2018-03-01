@@ -1,11 +1,10 @@
-require 'notifiable/sender/version'
 require 'rest-client'
 require 'api-auth'
 require 'json'
 require 'logger'
 
 module Notifiable
-  class Sender
+  class Sender    
     def initialize(base_uri, access_id, secret_key: nil, logger: Logger.new(STDOUT))
       raise 'base_uri cannot be nil' if base_uri.empty?
       raise 'access_id cannot be nil' if access_id.empty? 
