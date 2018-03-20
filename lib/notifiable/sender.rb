@@ -5,7 +5,7 @@ require 'logger'
 
 module Notifiable
   class Sender    
-    def initialize(base_uri, access_id, secret_key: nil, logger: Logger.new(STDOUT))
+    def initialize(access_id, base_uri: 'https://notifiable.futureworkshops.com', secret_key: nil, logger: Logger.new(STDOUT))
       raise 'base_uri cannot be nil' if base_uri.empty?
       raise 'access_id cannot be nil' if access_id.empty? 
       

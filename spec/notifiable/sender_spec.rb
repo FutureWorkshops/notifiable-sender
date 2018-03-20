@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Notifiable::Sender::V1 do
+describe Notifiable::Sender do
   
   let(:access_id) { "abc123" }
   let(:base_uri) { "http://notifiable.com" }
   let(:args) { {} }
   let(:notification_query_params) { args }
-  subject { Notifiable::Sender::V1.new(base_uri, access_id) }
+  subject { Notifiable::Sender.new(access_id, base_uri: base_uri) }
   
   describe "#send_notification" do
     before(:each) do
