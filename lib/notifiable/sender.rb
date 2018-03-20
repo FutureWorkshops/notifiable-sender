@@ -6,8 +6,8 @@ require 'logger'
 module Notifiable
   class Sender    
     def initialize(access_id, base_uri: 'https://notifiable.futureworkshops.com', secret_key: nil, logger: Logger.new(STDOUT))
-      raise 'base_uri cannot be nil' if base_uri.empty?
-      raise 'access_id cannot be nil' if access_id.empty? 
+      raise 'base_uri cannot be nil' if !base_uri || base_uri.empty?
+      raise 'access_id cannot be nil' if !access_id || access_id.empty? 
       
       @base_uri, @access_id, @secret_key, @logger = base_uri, access_id, secret_key, logger
     end
