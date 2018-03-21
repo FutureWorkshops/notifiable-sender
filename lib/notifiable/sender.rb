@@ -17,8 +17,9 @@ module Notifiable
       send_notification(message: message, parameters: parameters, content_available: content_available, filters: filters)
     end
     
-    def send_notification(message: nil, parameters: nil, filters: nil, content_available: nil)
+    def send_notification(title: nil, message: nil, parameters: nil, filters: nil, content_available: nil)
       body = {}
+      body[:title] = title unless title.nil?
       body[:message] = message unless message.nil?
       body[:parameters] = parameters.to_json unless parameters.nil?
       body[:filters] = filters.to_json unless filters.nil?
