@@ -57,6 +57,11 @@ describe Notifiable::Sender do
       @response = subject.send_notification_to_user(user_alias, args)
     end 
     
+    context "with title" do
+      let(:args) { {title: "New Offers"} }
+      it { expect(@response.code).to eq 200 }      
+    end
+    
     context "with message" do
       let(:args) { {message: "New Offers"} }
       it { expect(@response.code).to eq 200 }      

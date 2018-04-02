@@ -12,9 +12,9 @@ module Notifiable
       @base_uri, @access_id, @secret_key, @logger = base_uri, access_id, secret_key, logger
     end
     
-    def send_notification_to_user(user_alias, message: nil, parameters: nil, content_available: nil)
+    def send_notification_to_user(user_alias, title: nil, message: nil, parameters: nil, content_available: nil)
       filters = [{property: "user_alias", predicate: "eq", value: user_alias}]
-      send_notification(message: message, parameters: parameters, content_available: content_available, filters: filters)
+      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters)
     end
     
     def send_notification(title: nil, message: nil, parameters: nil, filters: nil, content_available: nil)
