@@ -17,6 +17,9 @@ module Notifiable
       send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters)
     end
     
+    # 
+    # Params:
+    # - filters: An array of hashes to filter notifications, e.g. [{property: "alert_level", predicate: "lt", value: 3}]
     def send_notification(title: nil, message: nil, parameters: nil, filters: nil, content_available: nil)
       body = {}
       body[:title] = title unless title.nil?
