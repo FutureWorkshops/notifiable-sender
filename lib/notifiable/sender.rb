@@ -12,6 +12,12 @@ module Notifiable
       @base_uri, @access_id, @secret_key, @logger = base_uri, access_id, secret_key, logger
     end
     
+    def send_notification_to_users(user_aliases, title: nil, message: nil, parameters: nil, content_available: nil)
+      raise 'user_aliases should be Enumerable' unless user_aliases.is_a? Enumerable
+      
+      user_aliases.each {|user_alias| send_notification_to_user(user_alias, title, message, parameters, content_avaiable)}
+    end
+    
     def send_notification_to_user(user_alias, title: nil, message: nil, parameters: nil, content_available: nil)
       filters = [{property: "user_alias", predicate: "eq", value: user_alias}]
       send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters)

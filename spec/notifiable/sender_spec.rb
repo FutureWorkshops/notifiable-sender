@@ -42,6 +42,16 @@ describe Notifiable::Sender do
     end
   end
   
+  describe '#send_notification_to_users' do
+    let(:user_aliases) { [] }
+    before(:each) { expect(subject).to receive(:send_notification_to_user).exactly(user_aliases.count).times }
+        
+    context 'one user' do
+      let(:user_aliases) { ['matt@futureworkshops.com'] }  
+      it { expect{ subject.send_notification_to_user(user_aliases) }.to_not raise_error }    
+    end    
+  end
+  
   describe "#send_notification_to_user" do
     let(:user_alias) { "matt@futureworkshops.com" }
     let(:args) { {} }
