@@ -43,13 +43,24 @@ describe Notifiable::Sender do
   end
   
   describe '#send_notification_to_users' do
-    let(:user_aliases) { [] }
-    before(:each) { expect(subject).to receive(:send_notification_to_user).exactly(user_aliases.count).times }
-        
-    context 'one user' do
-      let(:user_aliases) { ['matt@futureworkshops.com'] }  
-      it { expect{ subject.send_notification_to_user(user_aliases) }.to_not raise_error }    
-    end    
+    let(:user_aliases) { ['matt@futureworkshops.com', 'davide@futureworkshops.com'] } 
+    let(:notification_query_params) {  additional_notification_query_params.merge({filters: "[{\"property\":\"user_alias\",\"predicate\":\"in\",\"value\":#{user_aliases.to_json}}]"}) }
+    let(:additional_notification_query_params) { args }
+    let(:args) { {} }
+    
+    before(:each) do
+      stub_request(:post, "http://notifiable.com/api/v1/notifications").
+               with(body: {notification: notification_query_params}).
+               with(:headers => {'Authorization'=>'abc123'}).
+               to_return(status: 200)
+    
+      @response = subject.send_notification_to_users(user_aliases, args)
+    end 
+           
+    context "with title" do
+      let(:args) { {title: "New Offers"} }
+      it { expect(@response.code).to eq 200 }      
+    end   
   end
   
   describe "#send_notification_to_user" do

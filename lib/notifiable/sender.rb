@@ -13,9 +13,10 @@ module Notifiable
     end
     
     def send_notification_to_users(user_aliases, title: nil, message: nil, parameters: nil, content_available: nil)
-      raise 'user_aliases should be Enumerable' unless user_aliases.is_a? Enumerable
+      raise 'user_aliases should be an array' unless user_aliases.is_a? Array
       
-      user_aliases.each {|user_alias| send_notification_to_user(user_alias, title, message, parameters, content_avaiable)}
+      filters = [{property: "user_alias", predicate: "in", value: user_aliases}]
+      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters)
     end
     
     def send_notification_to_user(user_alias, title: nil, message: nil, parameters: nil, content_available: nil)
