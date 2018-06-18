@@ -12,28 +12,30 @@ module Notifiable
       @base_uri, @access_id, @secret_key, @logger = base_uri, access_id, secret_key, logger
     end
     
-    def send_notification_to_users(user_aliases, title: nil, message: nil, parameters: nil, content_available: nil)
+    def send_notification_to_users(user_aliases, title: nil, message: nil, parameters: nil, content_available: nil, thread_id: nil)
       raise 'user_aliases should be an array' unless user_aliases.is_a? Array
       
       filters = [{property: "user_alias", predicate: "in", value: user_aliases}]
-      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters)
+      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters, thread_id: thread_id)
     end
     
-    def send_notification_to_user(user_alias, title: nil, message: nil, parameters: nil, content_available: nil)
+    def send_notification_to_user(user_alias, title: nil, message: nil, parameters: nil, content_available: nil, thread_id: nil)
       filters = [{property: "user_alias", predicate: "eq", value: user_alias}]
-      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters)
+      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters, thread_id: thread_id)
     end
     
     # 
     # Params:
     # - filters: An array of hashes to filter notifications, e.g. [{property: "alert_level", predicate: "lt", value: 3}]
-    def send_notification(title: nil, message: nil, parameters: nil, filters: nil, content_available: nil)
+    def send_notification(title: nil, message: nil, parameters: nil, filters: nil, content_available: nil, thread_id: nil)
       body = {}
       body[:title] = title unless title.nil?
       body[:message] = message unless message.nil?
       body[:parameters] = parameters.to_json unless parameters.nil?
       body[:filters] = filters.to_json unless filters.nil?
       body[:content_available] = content_available unless content_available.nil?
+      body[:thread_id] = thread_id unless thread_id.nil?
+      
       headers = {}
       headers[:authorization] = @access_id unless @secret_key
       @request = RestClient::Request.new url: "#{@base_uri}/api/v1/notifications", payload: {notification: body}, method: :post, headers: headers

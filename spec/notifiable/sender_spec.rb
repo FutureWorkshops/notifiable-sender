@@ -40,6 +40,12 @@ describe Notifiable::Sender do
       let(:notification_query_params) { {content_available: "true"} }     
       it { expect(@response.code).to eq 200 }      
     end
+    
+    context "with thread_id" do
+      let(:args) { {thread_id: 'threadidabc123'} } 
+      let(:notification_query_params) { {thread_id: 'threadidabc123'} }     
+      it { expect(@response.code).to eq 200 }      
+    end
   end
   
   describe '#send_notification_to_users' do
