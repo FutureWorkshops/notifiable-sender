@@ -46,6 +46,12 @@ describe Notifiable::Sender do
       let(:notification_query_params) { {thread_id: 'threadidabc123'} }     
       it { expect(@response.code).to eq 200 }      
     end
+    
+    context "with mutable_content" do
+      let(:args) { {mutable_content: true} } 
+      let(:notification_query_params) { {mutable_content: "true"} }     
+      it { expect(@response.code).to eq 200 }      
+    end
   end
   
   describe '#send_notification_to_users' do
@@ -66,7 +72,36 @@ describe Notifiable::Sender do
     context "with title" do
       let(:args) { {title: "New Offers"} }
       it { expect(@response.code).to eq 200 }      
-    end   
+    end
+    
+    context "with mutable content" do
+      let(:args) { {mutable_content: true} } 
+      let(:additional_notification_query_params) { {mutable_content: "true"} }   
+      it { expect(@response.code).to eq 200 }      
+    end 
+  end
+  
+  describe '#send_media_notification_to_users' do
+    let(:user_aliases) { ['matt@futureworkshops.com', 'davide@futureworkshops.com'] }
+    let(:media_url) { 'http://example.com/image-1.png'} 
+    let(:notification_query_params) {  additional_notification_query_params.merge({filters: "[{\"property\":\"user_alias\",\"predicate\":\"in\",\"value\":#{user_aliases.to_json}}]", parameters: notification_parameters.to_json, mutable_content: "true"}) }
+    let(:notification_parameters) { {media_url: media_url} }
+    let(:additional_notification_query_params) { args }
+    let(:args) { {} }
+    
+    before(:each) do
+      stub_request(:post, "http://notifiable.com/api/v1/notifications").
+               with(body: {notification: notification_query_params}).
+               with(:headers => {'Authorization'=>'abc123'}).
+               to_return(status: 200)
+    
+      @response = subject.send_media_notification_to_users(user_aliases, media_url, args)
+    end 
+           
+    context "with title" do
+      let(:args) { {title: "New Offers"} }
+      it { expect(@response.code).to eq 200 }      
+    end
   end
   
   describe "#send_notification_to_user" do
@@ -103,6 +138,12 @@ describe Notifiable::Sender do
     context "with content available" do
       let(:args) { {content_available: true} }
       let(:additional_notification_query_params) { {content_available: "true"} }   
+      it { expect(@response.code).to eq 200 }      
+    end
+    
+    context "with mutable content" do
+      let(:args) { {mutable_content: true} } 
+      let(:additional_notification_query_params) { {mutable_content: "true"} }   
       it { expect(@response.code).to eq 200 }      
     end
   end
