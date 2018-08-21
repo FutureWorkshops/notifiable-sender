@@ -75,37 +75,44 @@ describe Notifiable::Sender do
       @response = subject.send_notification_to_users(user_aliases, args)
     end 
            
-    context "with title" do
+    context "title" do
       let(:args) { {title: "New Offers"} }
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with message" do
+    context "message" do
       let(:args) { {message: "New Offers"} }
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with mutable content" do
+    context "mutable content" do
       let(:args) { {mutable_content: true} } 
       let(:additional_notification_query_params) { {mutable_content: "true"} }   
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with category" do
+    context "category" do
       let(:args) { {category: 'MESSAGE'} } 
       let(:additional_notification_query_params) { {category: 'MESSAGE'} }   
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with parameters" do
+    context "parameters" do
       let(:args) { {parameters: {flow_id: 5}} }
       let(:additional_notification_query_params) { {parameters: "{\"flow_id\":5}"} }
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with content available" do
+    context "content available" do
       let(:args) { {content_available: true} }
       let(:additional_notification_query_params) { {content_available: "true"} }   
+      it { expect(@response.code).to eq 200 }      
+    end
+    
+    context "expiry" do
+      let(:time) { Time.now + (60 * 60) }
+      let(:args) { {expiry: time} }
+      let(:additional_notification_query_params) { {expiry: time.to_s} }   
       it { expect(@response.code).to eq 200 }      
     end
   end
@@ -127,12 +134,12 @@ describe Notifiable::Sender do
       @response = subject.send_media_notification_to_users(user_aliases, media_url, args)
     end 
            
-    context "with title" do
+    context "title" do
       let(:args) { {title: "New Offers"} }
       it { expect(@response.code).to eq 200 }      
     end
     
-    context "with category" do
+    context "category" do
       let(:args) { {category: 'MESSAGE'} } 
       let(:additional_notification_query_params) { {category: 'MESSAGE'} }   
       it { expect(@response.code).to eq 200 }      

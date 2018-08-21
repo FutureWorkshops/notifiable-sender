@@ -12,26 +12,27 @@ module Notifiable
       @base_uri, @access_id, @secret_key, @logger = base_uri, access_id, secret_key, logger
     end
     
-    def send_media_notification_to_users(user_aliases, media_url, title: nil, message: nil, parameters: {}, content_available: nil, thread_id: nil, category: nil)
+    def send_media_notification_to_users(user_aliases, media_url, title: nil, message: nil, parameters: {}, content_available: nil, thread_id: nil, category: nil, expiry: nil)
       raise 'user_aliases should be an array' unless user_aliases.is_a? Array
       raise 'media_url should not be blank' if media_url.nil? || media_url.empty?
       
       parameters = {media_url: media_url}.merge(parameters)
       filters = [{property: "user_alias", predicate: "in", value: user_aliases}]
-      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters, thread_id: thread_id, mutable_content: true, category: category)
+      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters, thread_id: thread_id, mutable_content: true, category: category, expiry: expiry)
     end
           
-    def send_notification_to_users(user_aliases, title: nil, message: nil, parameters: nil, content_available: nil, thread_id: nil, mutable_content: nil, category: nil)
+    def send_notification_to_users(user_aliases, title: nil, message: nil, parameters: nil, content_available: nil, thread_id: nil, mutable_content: nil, category: nil, expiry: nil)
       raise 'user_aliases should be an array' unless user_aliases.is_a? Array
       
       filters = [{property: "user_alias", predicate: "in", value: user_aliases}]
-      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters, thread_id: thread_id, mutable_content: mutable_content, category: category)
+      send_notification(title: title, message: message, parameters: parameters, content_available: content_available, filters: filters, thread_id: thread_id, mutable_content: mutable_content, category: category, expiry: expiry)
     end
     
     # 
     # Params:
     # - filters: An array of hashes to filter notifications, e.g. [{property: "alert_level", predicate: "lt", value: 3}]
-    def send_notification(title: nil, message: nil, parameters: nil, filters: nil, content_available: nil, thread_id: nil, mutable_content: nil, category: nil)
+    # - expiry: The system will not retry delivery past this date.
+    def send_notification(title: nil, message: nil, parameters: nil, filters: nil, content_available: nil, thread_id: nil, mutable_content: nil, category: nil, expiry: nil)
       body = {}
       body[:title] = title unless title.nil?
       body[:message] = message unless message.nil?
@@ -41,6 +42,7 @@ module Notifiable
       body[:thread_id] = thread_id unless thread_id.nil?
       body[:mutable_content] = mutable_content unless mutable_content.nil?
       body[:category] = category unless category.nil?
+      body[:expiry] = expiry unless expiry.nil?
       
       headers = {}
       headers[:authorization] = @access_id unless @secret_key
