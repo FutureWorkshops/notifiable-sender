@@ -11,9 +11,9 @@ require "notifiable/sender"
 # Pry.start
 
 # convenience method
-def send_notification(recipient_email_address, message, access_id = ENV['access_id'], secret_key = ENV['secret_key'])
-  sender = Notifiable::Sender.new 'https://notifiable-staging.herokuapp.com', access_id, secret_key: secret_key
-  sender.send_notification_to_user(recipient_email_address, message: message)
+def send_notification(user_alias, message, base_uri = 'https://notifiable-staging.herokuapp.com', access_id = ENV['ACCESS_ID'], secret_key = ENV['SECRET_KEY'])
+  sender = Notifiable::Sender.new access_id, base_uri: base_uri, secret_key: secret_key
+  sender.send_notification_to_users([user_alias], message: message)
 end
 
 require "irb"
