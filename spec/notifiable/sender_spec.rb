@@ -61,10 +61,13 @@ describe Notifiable::Sender do
   end
   
   describe '#send_notification_to_users' do
-    let(:user_aliases) { ['matt@futureworkshops.com', 'davide@futureworkshops.com'] } 
-    let(:notification_query_params) {  additional_notification_query_params.merge({filters: "[{\"property\":\"user_alias\",\"predicate\":\"in\",\"value\":#{user_aliases.to_json}}]"}) }
+    let(:user_aliases) { ['matt@futureworkshops.com', 'davide@futureworkshops.com'] }
+    let(:filters) { [] }
+    let(:user_filters) { ["property": "user_alias", "predicate": "in", "value": user_aliases] }
+    let(:filters_string) { (filters + user_filters).to_json }
+    let(:notification_query_params) {  additional_notification_query_params.merge({filters: filters_string}) }
     let(:additional_notification_query_params) { args }
-    let(:args) { {} }
+    let(:args) { {filters: filters} }
     
     before(:each) do
       stub_request(:post, "http://notifiable.com/api/v1/notifications").
@@ -113,6 +116,11 @@ describe Notifiable::Sender do
       let(:time) { Time.now + (60 * 60) }
       let(:args) { {expiry: time} }
       let(:additional_notification_query_params) { {expiry: time.to_s} }   
+      it { expect(@response.code).to eq 200 }      
+    end
+    
+    context "language filter" do
+      let(:filters) { [{property: 'language', predicate: 'eq', value: 'en'}] }
       it { expect(@response.code).to eq 200 }      
     end
   end
